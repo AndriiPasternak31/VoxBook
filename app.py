@@ -1,20 +1,22 @@
 import os
-import json
 import logging
 import streamlit as st
 from io import StringIO
 from openai import OpenAI
-from dotenv import load_dotenv
 import whisper
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import tempfile
-import base64
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-load_dotenv(dotenv_path=".env")
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Initialize OpenAI client with Streamlit secrets
+try:
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+except KeyError:
+    st.error("🔑 **OpenAI API Key Missing!** Please add your OpenAI API key to Streamlit secrets.")
+    st.info("💡 **How to add secrets:**\n1. Create a `.streamlit/secrets.toml` file in your project\n2. Add: `OPENAI_API_KEY = \"your-api-key-here\"`")
+    st.stop()
 
 # Global variables for embedding store
 document_chunks = []

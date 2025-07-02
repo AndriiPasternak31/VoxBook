@@ -2,7 +2,6 @@ uvicorn
 fastapi
 streamlit
 pypdf
-
 openai-whisper
 openai
 numpy
